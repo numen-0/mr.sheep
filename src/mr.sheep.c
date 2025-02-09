@@ -130,13 +130,10 @@ uint8_t sheep_exec(
     uint32_t inst_count = 0;
     loop
     {
-        // printf("|0x%04x:0x%04x|", inst_count++, inst_ptr);
-        // printf("HELLO\n");
+        // printf("\t|0x%04x:0x%04x|", inst_count++, inst_ptr);
         // printf("\t%s(0x%02x):\t|> 0x%02x(%02d), 0x%02x(%02d)",
         //     instruction_size_map[INST(0)], INST(0), LIT(1), LIT(1), LIT(2),
         //     LIT(2));
-        // printf("0x%02x\n", code[0]);
-        // printf("ADEU\n");
         // getchar();
         switch ( INST(0) ) {
             CASE(NOP, SKIP);
@@ -174,10 +171,10 @@ uint8_t sheep_exec(
             CASE_CJMP(JIF, UNLESS); // cond. jmp if false
             CASE_CJMP(JIP, IF_POS); // cond. jmp if positive
             CASE_CJMP(JIN, IF_NEG); // cond. jmp if negative
-            CASE_UJMP(JMP, +,
-                int8_t); // uncond. jmp CASE_X(JMF, inst_ptr += (uint8_t), ;);
-            CASE_UJMP(JMF, +, uint8_t); // uncond. extra pos jmp
-            CASE_UJMP(JMB, -, uint8_t); // uncond. extra neg jmp
+            CASE_UJMP(JMP, +, int8_t); // uncond. jmp
+            // TODO: wool is not prepared for this instruction...
+            // CASE_UJMP(JMF, +, uint8_t); // uncond. extra pos jmp
+            // CASE_UJMP(JMB, -, uint8_t); // uncond. extra neg jmp
             /* misc */
             CASE_PRINT(PRINT_D, "%d");
             CASE_PRINT(PRINT_H, "%02x");
@@ -186,7 +183,8 @@ uint8_t sheep_exec(
             default: ERR();
         }
         if ( inst_ptr < 0 || size <= inst_ptr ) {
-            printf("\nmr.sheep: out of bounds error");
+            // printf("%d\n", inst_ptr);
+            printf("\nmr.sheep:error: out of bounds jump\n");
             exit(1);
         }
     }

@@ -31,9 +31,9 @@ milk_mode=false
 
 BIN_VM="./mr.sheep"
 BIN_WOOL="./wool"
-# WOOL_IN="./in/test2.wool"
 # WOOL_IN="./examples/hello.wool"
 WOOL_IN="./examples/jump.wool"
+# WOOL_IN="./examples/print_100_to_0.wool"
 WOOL_OUT="./out/test.bee"
 
 MILK_SRC="./src/milk.py"

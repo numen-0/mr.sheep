@@ -1,0 +1,10 @@
+start:
+    mov &'z', 100
+loop:
+    JIF &'z', end
+    print_d &'z'
+    print_c '\n'
+    dec &'z'
+    JMP loop
+end:
+    EXIT 0

@@ -8,34 +8,33 @@
    \____/  \______/  \_______| \______/
 mr.sheep:
 [X] basic vm
-[X] basic bytecodes
 [ ] add:
-    [ ] more instructions
-    [X] out of bounds check
-[ ] debug:
-    [ ] mem map
-    [ ] bytecode disasembler
-    [ ] step by step running
-[ ] piping:
-    [ ] cmd | mr.sheep code.bc          # shell pipes to mem
-    [ ] mr.sheep code_0.bc code_1.bc    # internal mem to mem pipes (mem1 = mem0)
-    [ ] mr.sheep c0.bc c1.bc c2.bc ... --schema "0|1|3;0|2;0|3" or "0|(1|3,2,3)"
-[ ] vmcalls:
-    [ ] read, write, open, print_arr, core_dump?
-[x] fix:
-    [x] add ptr so you have literal, reference and ptr values
-    [x] when we jump cast the uint8_t to a sint8_t (do a void, first so you dont resize the val)
-    [ ] big jumps
-    [ ] redefined labels
+    [ ] more instructions (shift and roll...)
+    [ ] debug:
+        [ ] mem map
+        [ ] bytecode disasembler
+        [ ] step by step running
+    [ ] piping:
+        [ ] cmd | mr.sheep code.baa          # shell pipes to mem
+        [ ] mr.sheep code_0.baa code_1.baa    # internal mem to mem pipes (mem1 = mem0)
+        [ ] mr.sheep c0.baa c1.baa c2.baa ... --schema "0|1|3;0|2;0|3" or "0|(1|3,2,3)"
+    [ ] vmcalls:
+        [ ] read, write, open, fork?...
+[ ] fix:
+    [ ] instruction naming (JIF -> JZ?)
 wool:
 [x] convert wool code into mr.sheep valid bytecode
+[ ] add:
+    [ ] big unidirectional jumps??? (wool must resolve to Back or Forward jump)
+    [ ] maybe add some preprocessor macro magic :)
 [ ] make some examples:
     [x] hello world
     [ ] cat
     [ ] brain f*** interpreter
     [ ] expresion calculator
     [ ] celular automata
-[ ] maybe add some preprocessor macro magic :)
+[ ] fix:
+    [ ] ._.
 milk:
 [ ] convert milk code into valid wool code
 [ ] make some examples:

@@ -1,11 +1,11 @@
-; 0 to 100 nums
-start:
-    mov &'z', 100
-loop:
-    JIF &'z', end
-    print_d &'z'
-    print_c 10
-    dec &'z'
-    JMP loop
-end:
+main:
+    JMP B
+; ...
+; ...
+; ...
+A:
+    print_c 'A'
+    EXIT 0
+B:
+    print_c 'B'
     EXIT 0

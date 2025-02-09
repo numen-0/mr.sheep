@@ -55,19 +55,19 @@ typedef enum {
 } return_code_t;
 
 #define BIT(n) (1 << n)
-#define CHUNK                                                                  \
-    X(NAME)                                                                    \
-    X(CHAR)                                                                    \
+#define CHUNK \
+    X(NAME)   \
+    X(CHAR)   \
     X(NUMBER)
-#define SIMBOL                                                                 \
-    X(COMMA, ',')                                                              \
-    X(COLON, ':')                                                              \
-    X(AMPERSAND, '&')                                                          \
+#define SIMBOL        \
+    X(COMMA, ',')     \
+    X(COLON, ':')     \
+    X(AMPERSAND, '&') \
     X(CAROT, '^')
 // X(T_AT)
-#define TOKENS                                                                 \
-    X(ILLEGAL)                                                                 \
-    CHUNK                                                                      \
+#define TOKENS \
+    X(ILLEGAL) \
+    CHUNK      \
     SIMBOL
 
 #define X(t, ...) __T_##t,
@@ -91,13 +91,13 @@ typedef struct {
     size_t row;    /* base 1 */
     size_t column; /* base 1 */
 } Token;
-#define TOKEN_INIT(token, _type, _rep, _rep_size, _row, _column)               \
-    do {                                                                       \
-        (token).type = _type;                                                  \
-        (token).rep = _rep;                                                    \
-        (token).rep_size = _rep_size;                                          \
-        (token).row = _row;                                                    \
-        (token).column = _column + 1;                                          \
+#define TOKEN_INIT(token, _type, _rep, _rep_size, _row, _column) \
+    do {                                                         \
+        (token).type = _type;                                    \
+        (token).rep = _rep;                                      \
+        (token).rep_size = _rep_size;                            \
+        (token).row = _row;                                      \
+        (token).column = _column + 1;                            \
     } while ( 0 );
 
 #define DA_INIT_SIZE 1024
@@ -107,26 +107,26 @@ typedef struct {
     size_t count;
     Token** arr;
 } Token_List;
-#define _DA_APPEND_ITEM(da, item, init_size)                                   \
-    do {                                                                       \
-        if ( (da).count >= (da).capacity ) {                                   \
-            if ( (da).capacity == 0 ) {                                        \
-                (da).capacity = init_size;                                     \
-                (da).arr = malloc(sizeof(*(da).arr) * init_size);              \
-            } else {                                                           \
-                (da).capacity = (da).capacity * 2;                             \
-                (da).arr = realloc((da).arr, (da).capacity);                   \
-            }                                                                  \
-            ASSERT_PTR((da).arr);                                              \
-        }                                                                      \
-        (da).arr[(da).count++] = item;                                         \
+#define _DA_APPEND_ITEM(da, item, init_size)                      \
+    do {                                                          \
+        if ( (da).count >= (da).capacity ) {                      \
+            if ( (da).capacity == 0 ) {                           \
+                (da).capacity = init_size;                        \
+                (da).arr = malloc(sizeof(*(da).arr) * init_size); \
+            } else {                                              \
+                (da).capacity = (da).capacity * 2;                \
+                (da).arr = realloc((da).arr, (da).capacity);      \
+            }                                                     \
+            ASSERT_PTR((da).arr);                                 \
+        }                                                         \
+        (da).arr[(da).count++] = item;                            \
     } while ( 0 );
 #define DA_APPEND_ITEM(da, item) _DA_APPEND_ITEM(da, item, DA_INIT_SIZE)
-#define DA_STRUCT(T)                                                           \
-    struct {                                                                   \
-        size_t capacity;                                                       \
-        size_t count;                                                          \
-        T* arr;                                                                \
+#define DA_STRUCT(T)     \
+    struct {             \
+        size_t capacity; \
+        size_t count;    \
+        T* arr;          \
     }
 
 // declarations ///////////////////////////////////////////////////////////////
@@ -180,15 +180,15 @@ typedef struct {
         size_t offset;
     } meta;
 } Statement;
-#define _STATEMENT_INIT(statement, _type, _base, _meta, _val)                  \
-    do {                                                                       \
-        (statement).type = _type;                                              \
-        (statement).base = _base;                                              \
-        (statement).meta._meta = _val;                                         \
+#define _STATEMENT_INIT(statement, _type, _base, _meta, _val) \
+    do {                                                      \
+        (statement).type = _type;                             \
+        (statement).base = _base;                             \
+        (statement).meta._meta = _val;                        \
     } while ( 0 );
-#define LABEL_STATEMENT_INIT(statement, _type, _base, _val)                    \
+#define LABEL_STATEMENT_INIT(statement, _type, _base, _val) \
     _STATEMENT_INIT(statement, _type, _base, offset, _val)
-#define INSTR_STATEMENT_INIT(statement, _type, _base, _val)                    \
+#define INSTR_STATEMENT_INIT(statement, _type, _base, _val) \
     _STATEMENT_INIT(statement, _type, _base, tail, _val)
 typedef struct {
     size_t capacity;
@@ -277,11 +277,11 @@ static return_code_t lex_process_tokenss(Token_List* tokens, int out_fd)
             int* arg_mask;
             int arg_count, keyword;
 #define X(...)
-#define Z(kw, n, args)                                                         \
-    if ( strncasecmp(#kw, t->rep, t->rep_size) == 0 ) {                        \
-        arg_mask = valid_args[K_##kw];                                         \
-        arg_count = n;                                                         \
-        keyword = K_##kw;                                                      \
+#define Z(kw, n, args)                                  \
+    if ( strncasecmp(#kw, t->rep, t->rep_size) == 0 ) { \
+        arg_mask = valid_args[K_##kw];                  \
+        arg_count = n;                                  \
+        keyword = K_##kw;                               \
     } else
             BYTE_CODES
 #undef Z
@@ -359,15 +359,32 @@ append_statement:
         free(s);
         if ( errors ) { return RET_FAILURE; }
     }
-    DA_STRUCT(uint8_t) byte_code = { 0 };
-    for ( int i = 0; i < labels.count; i++ ) {          // we do this, because
-        Token* t = labels.arr[i].base;                  // latter we will need
-        char* rep = malloc(sizeof(char) * t->rep_size); // to strcmp and our
-        ASSERT_PTR(rep);                                // setup with global
-        strncpy(rep, t->rep, t->rep_size);              // strings is dificult
-        rep[t->rep_size] = '\0';                        // to work with ._.
-        t->rep = rep;
+    { // check labels
+        bool errors = false;
+        for ( int i = 0; i < labels.count; i++ ) {
+            // we do this, because latter we will need to strcmp and our setup
+            // with global strings is dificult to work with ._.
+            Token* l1 = labels.arr[i].base;
+            char* rep = malloc(sizeof(char) * l1->rep_size);
+            ASSERT_PTR(rep);
+            strncpy(rep, l1->rep, l1->rep_size);
+            rep[l1->rep_size] = '\0';
+            l1->rep = rep;
+
+            for ( size_t j = 0; j < i; j++ ) { // check redefined labels
+                Token* l0 = labels.arr[j].base;
+                if ( strcmp(l0->rep, l1->rep) ) { continue; }
+                errors = true;
+                printf("%s:%zu:%zu:error: redefined label '%s' first declared "
+                       "at '%zu:%zu'\n",
+                    tokens->file_name, l0->row, l0->column, l0->rep, l1->row,
+                    l1->column);
+                break;
+            }
+        }
+        if ( errors ) { return RET_FAILURE; }
     }
+    DA_STRUCT(uint8_t) byte_code = { 0 };
     { // resolve the entities
         // printf("size labl: %zu\n", labels.count);
         // printf("size inst: %zu\n", entities.count);
@@ -381,15 +398,15 @@ append_statement:
             uint8_t argc;
             // printf("checking '%s'\n", keyword_rep_map[keyword]);
             switch ( keyword ) { // HACK: I hope the compiler optimizes this...
-#define Z(kw, n, args)                                                         \
-    goto no_match_error;                                                       \
+#define Z(kw, n, args)   \
+    goto no_match_error; \
     case K_##kw:
-#define X(kw, n, ...)                                                          \
-    if ( n == 0 || (n == 1 && valid_args_2[kw][0] & tail[0].type)              \
-        || (n == 2 && valid_args_2[kw][0] & tail[0].type) ) {                  \
-        bc = kw;                                                               \
-        argc = n;                                                              \
-        break;                                                                 \
+#define X(kw, n, ...)                                             \
+    if ( n == 0 || (n == 1 && valid_args_2[kw][0] & tail[0].type) \
+        || (n == 2 && valid_args_2[kw][0] & tail[0].type) ) {     \
+        bc = kw;                                                  \
+        argc = n;                                                 \
+        break;                                                    \
     }
                 case K_UNWOWN:
                     printf("invalid keyword '%s'\n", keyword_rep_map[keyword]);
@@ -415,7 +432,8 @@ append_statement:
                         return RET_FAILURE;
                     } else if ( ti->rep_size == 3 ) {
                         if ( NEED_SCAPE(ti->rep[1]) ) {
-                            printf("%s:%zu:%zu:error: char value '%c' needs to "
+                            printf("%s:%zu:%zu:error: char value '%c' "
+                                   "needs to "
                                    "be scaped\n\t%s\n",
                                 tokens->file_name, t->row, t->column,
                                 ti->rep[1], t->rep);
@@ -424,7 +442,8 @@ append_statement:
                         val = ti->rep[1];
                     } else if ( ti->rep_size == 4 ) {
                         if ( !VALID_SCAPED(ti->rep[1]) ) {
-                            printf("%s:%zu:%zu:error: char value '%c' can't be "
+                            printf("%s:%zu:%zu:error: char value '%c' "
+                                   "can't be "
                                    "scaped\n\t%s\n",
                                 tokens->file_name, t->row, t->column,
                                 ti->rep[1], t->rep);
@@ -488,8 +507,8 @@ strtol_done:
                         char* rep = calloc(sizeof(char), ti->rep_size + 1);
                         ASSERT_PTR(rep);
                         strncpy(rep, ti->rep, ti->rep_size);
-                        printf(
-                            "%s:%zu:%zu:error: unknown label '%s', in\n\t%s\n",
+                        printf("%s:%zu:%zu:error: unknown label '%s', "
+                               "in\n\t%s\n",
                             tokens->file_name, t->row, t->column, rep, t->rep);
                         free(rep);
                         return RET_FAILURE;
@@ -515,30 +534,30 @@ no_match_error:
 
 // tokenize
 // ///////////////////////////////////////////////////////////////////
-#define NUMBER_CHECK(isX)                                                      \
-    do {                                                                       \
-        do {                                                                   \
-            i++;                                                               \
-            if ( i >= size ) { break; }                                        \
-            if ( !isX(line[i]) ) {                                             \
-                if ( issep(line[i]) ) { goto number_done; }                    \
-                do {                                                           \
-                    i++;                                                       \
-                } while ( i < size && !issep(line[i]) );                       \
-                TOKEN_INIT(*t, T_ILLEGAL, &line[n], i - n, row, n);            \
-                goto append_token;                                             \
-            }                                                                  \
-        } while ( true );                                                      \
-        goto number_done;                                                      \
+#define NUMBER_CHECK(isX)                                           \
+    do {                                                            \
+        do {                                                        \
+            i++;                                                    \
+            if ( i >= size ) { break; }                             \
+            if ( !isX(line[i]) ) {                                  \
+                if ( issep(line[i]) ) { goto number_done; }         \
+                do {                                                \
+                    i++;                                            \
+                } while ( i < size && !issep(line[i]) );            \
+                TOKEN_INIT(*t, T_ILLEGAL, &line[n], i - n, row, n); \
+                goto append_token;                                  \
+            }                                                       \
+        } while ( true );                                           \
+        goto number_done;                                           \
     } while ( 0 );
-#define NUMBER_CHECK0x(isX)                                                    \
-    do {                                                                       \
-        i += 2;                                                                \
-        if ( !isX(line[i]) ) {                                                 \
-            TOKEN_INIT(*t, T_ILLEGAL, &line[i], 2, row, i);                    \
-            goto append_token;                                                 \
-        }                                                                      \
-        NUMBER_CHECK(isX);                                                     \
+#define NUMBER_CHECK0x(isX)                                 \
+    do {                                                    \
+        i += 2;                                             \
+        if ( !isX(line[i]) ) {                              \
+            TOKEN_INIT(*t, T_ILLEGAL, &line[i], 2, row, i); \
+            goto append_token;                              \
+        }                                                   \
+        NUMBER_CHECK(isX);                                  \
     } while ( 0 )
 
 inline static void tok_print_token(Token* t)
@@ -571,10 +590,10 @@ static void tok_process_line(
 
         if ( line[i] == ';' ) { break; }
         if ( line[i] == ',' ) { continue; }
-#define X(tok, s)                                                              \
-    else if ( line[i] == s )                                                   \
-    {                                                                          \
-        TOKEN_INIT(*t, T_##tok, &line[i], 1, row, i);                          \
+#define X(tok, s)                                     \
+    else if ( line[i] == s )                          \
+    {                                                 \
+        TOKEN_INIT(*t, T_##tok, &line[i], 1, row, i); \
     }
         SIMBOL
 #undef X
@@ -678,7 +697,8 @@ return_code_t pre_read_file(const char* file_name, Token_List* tokens)
 
     // TODO: problem is that we are overwritting the buffer each loop, so we
     //       need to make a new one each step and save the previous one to
-    //       another place... memory leak idea was good but we need to leak more
+    //       another place... memory leak idea was good but we need to leak
+    //       more
     char* buffer = line_buf;
     size_t size = 0, row = 0;
     while ( (bytes_read = read(fd, buffer, BATCH_SIZE)) > 0 ) {
