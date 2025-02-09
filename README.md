@@ -1,11 +1,54 @@
-# zorgin
-8bit virtual machine.
+# mr.sheep
+```
+                                          .-------.               
+ _________                                |.      |               
+|                                         ||      |               
+|  One must not hasten perfection;      .-|_______|-.             
+|                                      '.___________.'            
+|  even the finest wool takes time        Uuuuuu. |               
+                                    |     | . 0 '.'( .  )         
+   to weave.                        |  . o`---|--'.   )    )      
+                            --------' (     ^()^   )      .  )    
+                                       ( .   /\  .       (    )   
+                                      (   )  \7 (   ) (     ) )   
+                                       GuuUuuuUUuuuUUuuUUuuUUD    
+                                         d/ d/         d/ d/      
+```
 
-especs:
-no stack
-8bit * 1B direct access mem.
-only 8bit based instructions
+**mr.sheep** is an 8-bit, highly restricted virtual machine, designed to test
+the boundaries of a hard environment.
 
+Features:
+- 256x8B addressable RAM
+- All instructions and values fit into 8-bit signed integers
+- VM calls (WIP)
 
-## objective
-- Build a lightweight and generic virtual machine capable of executing bytecode.
+## baa
+`baa` is the bytecode used by `mr.sheep`.
+Objectives:
+- basic input/output capabilities
+- test Turing completeness
+- create high-level programing languages that translate to baa bytecode
+- make baa compilable
+- add debugging features
+- ...
+
+## wool
+assembly-like language that directly translates into `baa` bytecode.
+
+## milk (WIP)
+simple stack-based language that transpiles directly into `wool`.
+
+## bigBaain (WIP)
+`brainf***` to `wool` transpiler.
+
+## tests
+simple test schema:
+1. run the program
+2. catch output
+3. compare it with expected output
+4. done
+
+## license
+`TODO`
+
