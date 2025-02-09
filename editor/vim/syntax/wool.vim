@@ -20,12 +20,12 @@ endif
 " keywords
 syn case ignore
 syn keyword sheepKeyword nop mov cmp eq ne lt gt ge le band bor bxor not
-            \ land lor lxor inc dec add sub mul div mod lsh rsh jit jif jin 
-            \ jip jmp jmf jmb print_c print_d print_h exit
+            \ land lor lxor inc dec add sub mul div mod shl shr rol ror jnz
+            \ jz jns js jmp vmcall exit
 syn case match
 
 " normal
-syn match sheepNormal /[a-zA-Z_][a-zA-Z_0-9]\+/
+syn match sheepNormal /[a-zA-Z_][a-zA-Z_0-9]*/
 
 " comment tags
 syntax keyword sheepTodos contained TODO XXX FIXME NOTE HACK
@@ -34,7 +34,7 @@ syntax keyword sheepTodos contained TODO XXX FIXME NOTE HACK
 syntax region sheepComment start=";" end="$"   contains=sheepTodos
 
 " labels
-syn match sheepLabel /[a-zA-Z_][a-zA-Z_0-9]\+:/
+syn match sheepLabel /[a-zA-Z_][a-zA-Z_0-9]*:/
 
 " escape literals: \n, \r, \\, \', \0
 syntax match sheepEscapes display contained "\\[0nr\']"
@@ -57,7 +57,7 @@ highlight default link sheepChar        Character
 highlight default link sheepComment     Comment
 highlight default link sheepEscapes     SpecialChar
 highlight default link sheepKeyword     Keyword
-highlight default link sheepLabel       Label   
+highlight default link sheepLabel       Label
 highlight default link sheepNormal      Normal
 highlight default link sheepNumber      Number
 highlight default link sheepPointer     Constant

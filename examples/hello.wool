@@ -22,7 +22,7 @@ loop:
     mov &0xfd, &'p' ; &buf
     vmcall ; exec vmcall
     inc &'p'
-    JIT ^'p', loop
+    JNZ ^'p', loop
 loop_end: ; [1] for known size strings
     mov &0xfd, 1  ; &buf
     mov &0xfc, 12 ; count

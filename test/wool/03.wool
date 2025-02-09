@@ -1,7 +1,8 @@
+; TODO: fix this test
 start:
     mov &'z', 100
 loop:
-    JIF &'z', end
+    JZ &'z', end
     print_d &'z'
     print_c '\n'
     dec &'z'

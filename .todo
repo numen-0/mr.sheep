@@ -9,7 +9,6 @@
 mr.sheep:
 [X] basic vm
 [ ] add:
-    [ ] more instructions (shift and roll...)
     [ ] debug:
         [ ] mem map
         [ ] bytecode disasembler
@@ -19,10 +18,10 @@ mr.sheep:
         [ ] mr.sheep code_0.baa code_1.baa    # internal mem to mem pipes (mem1 = mem0)
         [ ] mr.sheep c0.baa c1.baa c2.baa ... --schema "0|1|3;0|2;0|3" or "0|(1|3,2,3)"
     [ ] vmcalls:
-        [ ] read, write, open, fork?...
-        [ ] remove print_c, print_d and print_h
+        [x] read, write, open
+        [ ] fork, signal, ...
 [ ] fix:
-    [ ] instruction naming (JIF -> JZ?)
+    [ ] ._.
 wool:
 [x] convert wool code into mr.sheep valid bytecode
 [ ] add:

@@ -72,6 +72,10 @@
     CASE(GLUE(inst, _R), printf(format, REF(1))); \
     CASE(GLUE(inst, _P), printf(format, PTR(1)))
 
+#define _ROR(a, b)                                                       \
+    (a(1)) = ((((b(2)) % 8) >> (a(1))) | ((((b(2)) - 8) % 8) >> (a(1))))
+#define _ROL(a, b)                                                       \
+    (a(1)) = (((a(1)) << ((b(2)) % 8)) | ((a(1)) << (((b(2)) - 8) % 8)))
 #define _XOR(a, b) (a(1)) = !((a(1)) && (b(2))) && ((a(1)) || (b(2)))
 #define _CMP(a, b)                                                 \
     (a(1)) = (((a(1)) == (b(2))) ? 0 : ((a(1)) < (b(2))) ? -1 : 1)
@@ -204,21 +208,23 @@ static uint8_t sheep_exec(
             CASE_OP(MUL, *);
             CASE_OP(DIV, /);
             CASE_OP(MOD, %);
-            CASE_OP(LSH, <<);
-            CASE_OP(RSH, >>);
+            CASE_OP(SHL, <<);
+            CASE_OP(SHR, >>);
+            CASE_F(ROL, _ROL);
+            CASE_F(ROR, _ROR);
             /* control flow (they are relative jumps to the intruction ptr) */
-            CASE_CJMP(JIT, IF);        // cond. jmp if true
-            CASE_CJMP(JIF, UNLESS);    // cond. jmp if false
-            CASE_CJMP(JIP, IF_POS);    // cond. jmp if positive
-            CASE_CJMP(JIN, IF_NEG);    // cond. jmp if negative
+            CASE_CJMP(JNZ, IF);        // cond. jmp if not zero
+            CASE_CJMP(JZ, UNLESS);     // cond. jmp if zero
+            CASE_CJMP(JNS, IF_POS);    // cond. jmp if not signed (positive)
+            CASE_CJMP(JS, IF_NEG);     // cond. jmp if signed (negative)
             CASE_UJMP(JMP, +, int8_t); // uncond. jmp
             // TODO: wool is not prepared for this instruction...
             // CASE_UJMP(JMF, +, uint8_t); // uncond. extra pos jmp
             // CASE_UJMP(JMB, -, uint8_t); // uncond. extra neg jmp
             /* misc */
-            CASE_PRINT(PRINT_D, "%d");
-            CASE_PRINT(PRINT_H, "%02x");
-            CASE_PRINT(PRINT_C, "%c");
+            // CASE_PRINT(PRINT_D, "%d");
+            // CASE_PRINT(PRINT_H, "%02x");
+            // CASE_PRINT(PRINT_C, "%c");
             RAW_CASE_X(EXIT, return, );
             CASE(VMCALL, sheep_vmcall(ram));
             default: ERR("unimplemented bytecode '0x%02x'", INST(0));
@@ -268,7 +274,15 @@ size_t sheep_load_file(const char* file_name, uint8_t** buffer)
     return size;
 }
 
-// void dump_baa_reps()
+// void dump_baa_kw_reps()
+// {
+// #define X(...)
+// #define Z(inst, ...) printf("%-8s\n", #inst);
+//     BYTE_CODES;
+// #undef Z
+// #undef X
+// }
+// void dump_baa_bc_reps()
 // {
 // #define Z(...)
 // #define X(inst, ...) printf("0x%x %-8s\n", inst, #inst);

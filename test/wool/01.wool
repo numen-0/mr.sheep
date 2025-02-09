@@ -1,11 +1,18 @@
 main:
+    mov &0xff, 2 ; write call
+    mov &0xfe, 1 ; stdout
+    mov &0xfc, 1 ; count
+    mov &0xfd, 'c' ; &buf
     JMP B
 ; ...
 ; ...
 ; ...
 A:
-    print_c 'A'
-    EXIT 0
+    mov &'c', 'A'
+    JMP end
 B:
-    print_c 'B'
+    mov &'c', 'B'
+    JMP end
+end:
+    vmcall ; exec vmcall
     EXIT 0

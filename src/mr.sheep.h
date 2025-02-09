@@ -76,10 +76,10 @@ typedef enum {
     PERM_ZX(BOR)                                                             \
     PERM_ZX(BXOR)                                                            \
     /* logic op */                                                           \
-    PERM_Z(NOT)                                                              \
-    PERM_ZX(LAND)                                                            \
-    PERM_ZX(LOR)                                                             \
-    PERM_ZX(LXOR)                                                            \
+    PERM_Z(NOT)   /* NOTE: this inst. can be replaced with BXOR A, 0xff */   \
+    PERM_ZX(LAND) /* NOTE: this inst. can be replaced with BAND  */          \
+    PERM_ZX(LOR)  /* NOTE: this inst. can be replaced with BOR   */          \
+    PERM_ZX(LXOR) /* NOTE: this inst. can be replaced with BXOR  */          \
     /* arithmetic op */                                                      \
     PERM_Z(INC)                                                              \
     PERM_Z(DEC)                                                              \
@@ -88,22 +88,24 @@ typedef enum {
     PERM_ZX(MUL)                                                             \
     PERM_ZX(DIV)                                                             \
     PERM_ZX(MOD)                                                             \
-    PERM_ZX(LSH)                                                             \
-    PERM_ZX(RSH)                                                             \
+    PERM_ZX(SHL)                                                             \
+    PERM_ZX(SHR)                                                             \
+    PERM_ZX(ROL)                                                             \
+    PERM_ZX(ROR)                                                             \
     /* control flow */                                                       \
-    PERM_ZX(JIT)                                                             \
-    PERM_ZX(JIF)                                                             \
-    PERM_ZX(JIN)                                                             \
-    PERM_ZX(JIP)                                                             \
-    PERM_X(JMP)                                                              \
+    PERM_ZX(JNZ) /* jump if not zero */                                      \
+    PERM_ZX(JZ)  /* jump if zero */                                          \
+    PERM_ZX(JNS) /* jump if not signed (positive) */                         \
+    PERM_ZX(JS)  /* jump if signed (negative) */                             \
+    PERM_X(JMP)  /* unconditional jump */                                    \
     /* TODO: figure it the jump direction and set the right jump, maybe this \
      * should be just for litterals */                                       \
     /* PERM_X(JMF) */                                                        \
     /* PERM_X(JMB) */                                                        \
     /* misc */                                                               \
-    PERM_X(PRINT_C)                                                          \
-    PERM_X(PRINT_D)                                                          \
-    PERM_X(PRINT_H)                                                          \
+    /* PERM_X(PRINT_C) */                                                    \
+    /* PERM_X(PRINT_D) */                                                    \
+    /* PERM_X(PRINT_H) */                                                    \
     PERM_0(VMCALL)                                                           \
     PERM_X(EXIT)
 
