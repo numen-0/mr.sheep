@@ -1,0 +1,7 @@
+    print_c 'f'   
+    mov &'A', 10
+s1:
+    JMB s1
+s1:
+    JIT &'A', s1
+    EXIT 0

@@ -1,0 +1,60 @@
+---
+IndentPPDirectives: AfterHash
+BasedOnStyle: WebKit
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
+AlignEscapedNewlines: LeftWithLastLine
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 2
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: false
+  AfterStruct: false
+  SplitEmptyFunction: false
+  AfterControlStatement: Never
+  AfterFunction: true
+  AfterUnion: false
+  BeforeElse: false
+  BeforeWhile: false
+  IndentBraces: false
+BracedInitializerIndentWidth: 4
+BreakAfterReturnType: None
+ColumnLimit: 80
+IndentCaseLabels: true
+IndentGotoLabels: false
+IndentWidth: 4
+InsertNewlineAtEOF: true
+Language: Cpp
+LineEnding: LF
+MaxEmptyLinesToKeep: 2
+PointerAlignment: Left
+QualifierAlignment: Custom
+QualifierOrder: [inline, static, const, volatile, restrict, type]
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesInParens: Custom
+SpacesInParensOptions:
+  ExceptDoubleParentheses: false
+  InCStyleCasts: false
+  InConditionalStatements: true
+  InEmptyParentheses: false
+SpacesInSquareBrackets: false
+TabWidth: 4
+UseTab: Never
+WhitespaceSensitiveMacros: [STRINGIZE, PP_STRINGIZE]
+
+...

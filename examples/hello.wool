@@ -1,0 +1,22 @@
+main:
+    mov &0, 1
+    mov ^0, 'H'  inc &0
+    mov ^0, 'e'  inc &0
+    mov ^0, 'l'  inc &0
+    mov ^0, 'l'  inc &0
+    mov ^0, 'o'  inc &0
+    mov ^0, ' '  inc &0
+    mov ^0, 'W'  inc &0
+    mov ^0, 'o'  inc &0
+    mov ^0, 'r'  inc &0
+    mov ^0, 'l'  inc &0
+    mov ^0, 'd'  inc &0
+    mov ^0, '\n' inc &0
+    mov ^0, 0
+    mov &0, 1
+loop:
+    print_c ^0
+    inc &0
+    JIT ^0, loop
+end:
+    EXIT 0

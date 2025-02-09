@@ -1,0 +1,80 @@
+#!/bin/sh
+
+set -eu
+
+# quiet=true
+
+## bobs tools #################################################################
+R="\e[0m"
+BOB="( c-[//]-[//])"
+C1="\e[32;1m"
+C2="\e[92m"
+C3="\e[95m"
+R="\e[0m"
+
+bob_init() {
+    printf "${C1}%s${R}\n" "bob is cooking $BOB"
+}
+bob_end() {
+    printf "${C1}%s${R}\n" "bob cooked $BOB"
+}
+bob_say() {
+    printf "${C2}[bob]${R}: %s\n" "$1"
+}
+bob_cmd() {
+    printf "${C3}%s${R}\n" "$1"
+}
+## script #####################################################################
+bob_init
+
+milk_mode=false
+
+BIN_VM="./mr.sheep"
+BIN_WOOL="./wool"
+# WOOL_IN="./in/test2.wool"
+# WOOL_IN="./examples/hello.wool"
+WOOL_IN="./examples/jump.wool"
+WOOL_OUT="./out/test.bee"
+
+MILK_SRC="./src/milk.py"
+MILK_IN="./in/test.milk"
+MILK_OUT="./out/test.wool"
+
+OUT="out/"
+
+[ -d $OUT ] || mkdir -p $OUT
+
+if $milk_mode; then
+    bob_say "genreating wool code..."
+    bob_cmd "python $MILK_SRC $MILK_IN $MILK_OUT"
+    python $MILK_SRC $MILK_IN $MILK_OUT
+
+    bob_say "genreating wool code..."
+    bob_cmd "cat $MILK_OUT"
+    cat $MILK_OUT
+else
+    # gcc -E src/mr.sheep.c -o out/mr.sheep.proc.c
+    # gcc -E src/jr.wool.c -o out/jr.wool.proc.c
+    bob_say "compiling compiler..."
+    bob_cmd "gcc -o $BIN_WOOL ./src/wool.c"
+    gcc -o $BIN_WOOL ./src/wool.c
+
+    bob_say "compiling vm..."
+    bob_cmd "gcc -o $BIN_VM ./src/mr.sheep.c"
+    gcc -o $BIN_VM ./src/mr.sheep.c
+
+    bob_say "compiling binary"
+    bob_cmd "$BIN_WOOL $WOOL_IN $WOOL_OUT"
+    # $BIN_WOOL $WOOL_IN $WOOL_OUT > /dev/null
+    $BIN_WOOL $WOOL_IN $WOOL_OUT
+
+    bob_say "checking the binary file"
+    bob_cmd "xxd -g 1 $WOOL_OUT"
+    xxd -g 1 $WOOL_OUT
+
+    bob_say "exec..."
+    bob_cmd "$BIN_VM ./out/test.bee"
+    $BIN_VM ./out/test.bee
+fi
+
+bob_end
