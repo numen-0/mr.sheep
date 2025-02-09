@@ -1,22 +1,30 @@
 main:
-    mov &0, 1
-    mov ^0, 'H'  inc &0
-    mov ^0, 'e'  inc &0
-    mov ^0, 'l'  inc &0
-    mov ^0, 'l'  inc &0
-    mov ^0, 'o'  inc &0
-    mov ^0, ' '  inc &0
-    mov ^0, 'W'  inc &0
-    mov ^0, 'o'  inc &0
-    mov ^0, 'r'  inc &0
-    mov ^0, 'l'  inc &0
-    mov ^0, 'd'  inc &0
-    mov ^0, '\n' inc &0
-    mov ^0, 0
-    mov &0, 1
+    mov &'p', 1 ; load string char by char
+    mov ^'p', 'H'  inc &'p'
+    mov ^'p', 'e'  inc &'p'
+    mov ^'p', 'l'  inc &'p'
+    mov ^'p', 'l'  inc &'p'
+    mov ^'p', 'o'  inc &'p'
+    mov ^'p', ' '  inc &'p'
+    mov ^'p', 'W'  inc &'p'
+    mov ^'p', 'o'  inc &'p'
+    mov ^'p', 'r'  inc &'p'
+    mov ^'p', 'l'  inc &'p'
+    mov ^'p', 'd'  inc &'p'
+    mov ^'p', '\n' inc &'p'
+    mov ^'p', '\0'
+    mov &'p', 1  ; set pointer to the start of the strings
+    ; [0] for unknown size null terminated strings
+    mov &0xff, 2 ; write call
+    mov &0xfe, 1 ; stdout
+    mov &0xfc, 1 ; count
 loop:
-    print_c ^0
-    inc &0
-    JIT ^0, loop
-end:
+    mov &0xfd, &'p' ; &buf
+    vmcall ; exec vmcall
+    inc &'p'
+    JIT ^'p', loop
+loop_end: ; [1] for known size strings
+    mov &0xfd, 1  ; &buf
+    mov &0xfc, 12 ; count
+    vmcall ; exec vmcall
     EXIT 0

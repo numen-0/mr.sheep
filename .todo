@@ -20,6 +20,7 @@ mr.sheep:
         [ ] mr.sheep c0.baa c1.baa c2.baa ... --schema "0|1|3;0|2;0|3" or "0|(1|3,2,3)"
     [ ] vmcalls:
         [ ] read, write, open, fork?...
+        [ ] remove print_c, print_d and print_h
 [ ] fix:
     [ ] instruction naming (JIF -> JZ?)
 wool:

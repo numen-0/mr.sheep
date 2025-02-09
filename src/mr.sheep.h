@@ -1,15 +1,15 @@
-#ifndef _SRC_ZORGIN_H
-#define _SRC_ZORGIN_H
+#ifndef _MR_SHEEP_H
+#define _MR_SHEEP_H
 
 #include <assert.h>
 #include <limits.h>
 #include <stdint.h>
 
-#define BIT(n)       (1 << n)
-#define MR_SHEEP_MEM BIT(8)
+#define BIT(n)                (1 << n)
+#define MR_SHEEP_MEM          BIT(8)
+#define _MAGIC_N              0xbaaa
+#define MR_SHEEP_MAGIC_NUMBER ((uint16_t)((_MAGIC_N << 8) | (_MAGIC_N >> 8)))
 
-// IDEA: add a switch to read data mem. as code?
-// IDEA: X(SYSCALL, 1)? we have no calls so its strange...
 typedef enum {
     ARG_INVALID = 0,
     ARG_LITERAL = BIT(0),   // raw value
@@ -104,18 +104,31 @@ typedef enum {
     PERM_X(PRINT_C)                                                          \
     PERM_X(PRINT_D)                                                          \
     PERM_X(PRINT_H)                                                          \
+    PERM_0(VMCALL)                                                           \
     PERM_X(EXIT)
+
+#define VMCALLS \
+    X(OPEN)     \
+    X(READ)     \
+    X(WRITE)    \
+    X(CLOSE)
+
+#define X(call) VC_##call,
+typedef enum { VMCALLS /*,*/ _VC_COUNT } vm_call_t;
+#undef X
+static_assert(_VC_COUNT <= UINT8_MAX,
+    "vm call operations exceed maximum value for uint8_t.");
 
 #define Z(...)
 #define X(inst, ...) inst,
-typedef enum { BYTE_CODES /*,*/ _COUNT } byte_code_t;
-static_assert(_COUNT <= UINT8_MAX,
-    "Bytecode operations exceed maximum value for uint8_t.");
+typedef enum { BYTE_CODES /*,*/ _BC_COUNT } byte_code_t;
 #undef X
+static_assert(_BC_COUNT <= UINT8_MAX,
+    "bytecode operations exceed maximum value for uint8_t.");
 
 #define X(inst, n, ...) inst##_SIZE = 1 + n,
 enum Byte_Code_Size { BYTE_CODES };
 #undef X
 #undef Z
 
-#endif // !_SRC_ZORGIN_H
+#endif // !_MR_SHEEP_H

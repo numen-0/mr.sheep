@@ -33,7 +33,7 @@
 #define isodigit(c) ('0' <= c || c <= '7')
 #define isbdigit(c) (c == '0' || c == '1')
 
-#define ASSERT_PTR(ptr) assert(ptr && "buy more RAM! :)")
+#define ASSERT_PTR(ptr) (assert(ptr && "buy more RAM! :)"), ptr)
 #define GLUE(a, b)      a##b
 #define _STRINGSING(a)  #a
 #define STRINGSING(a)   _STRINGSING(a)
@@ -153,7 +153,7 @@ uint8_t instruction_size_map[] = { 0, BYTE_CODES };
 
 #define Z(...)
 #define X(inst, _, args, ...) [inst] = args,
-int valid_args_2[_COUNT][MAX_ARGC] = { BYTE_CODES };
+int valid_args_2[_BC_COUNT][MAX_ARGC] = { BYTE_CODES };
 #undef X
 #undef Z
 
@@ -403,7 +403,8 @@ append_statement:
     case K_##kw:
 #define X(kw, n, ...)                                             \
     if ( n == 0 || (n == 1 && valid_args_2[kw][0] & tail[0].type) \
-        || (n == 2 && valid_args_2[kw][0] & tail[0].type) ) {     \
+        || (n == 2 && valid_args_2[kw][0] & tail[0].type          \
+            && valid_args_2[kw][1] & tail[1].type) ) {            \
         bc = kw;                                                  \
         argc = n;                                                 \
         break;                                                    \
@@ -473,13 +474,13 @@ append_statement:
                     };
                     v = strtol(ti->rep, NULL, 10);
 strtol_done:
-                    if ( v < INT8_MIN || INT8_MAX < v ) {
+                    if ( v < INT8_MIN || UINT8_MAX < v ) {
                         // tok_print_token(ti);
                         printf("'%s'\n", ti->rep);
                         printf("%s:%zu:%zu:warning: value overflow truncating "
                                "(%d < %ld < %d), in \n\t%s\n",
                             tokens->file_name, t->row, t->column, INT8_MIN, v,
-                            INT8_MAX, t->rep);
+                            UINT8_MAX, t->rep);
                     }
                     val = (int8_t)v;
                 } else {
@@ -525,6 +526,8 @@ no_match_error:
         }
 
         { // dump bytecode
+            uint16_t magic_number = MR_SHEEP_MAGIC_NUMBER;
+            write(out_fd, &magic_number, sizeof(uint16_t));
             write(out_fd, byte_code.arr,
                 sizeof(byte_code.arr[0]) * byte_code.count);
         }

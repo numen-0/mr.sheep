@@ -31,8 +31,9 @@ milk_mode=false
 
 BIN_VM="./mr.sheep"
 BIN_WOOL="./wool"
-# WOOL_IN="./examples/hello.wool"
-WOOL_IN="./examples/jump.wool"
+WOOL_IN="./examples/hello.wool"
+# WOOL_IN="./examples/t.wool"
+# WOOL_IN="./examples/jump.wool"
 # WOOL_IN="./examples/print_100_to_0.wool"
 WOOL_OUT="./out/test.bee"
 
@@ -54,7 +55,7 @@ if $milk_mode; then
     cat $MILK_OUT
 else
     # gcc -E src/mr.sheep.c -o out/mr.sheep.proc.c
-    # gcc -E src/jr.wool.c -o out/jr.wool.proc.c
+    # gcc -E src/wool.c -o out/wool.proc.c
     bob_say "compiling compiler..."
     bob_cmd "gcc -o $BIN_WOOL ./src/wool.c"
     gcc -o $BIN_WOOL ./src/wool.c
