@@ -18,15 +18,14 @@ mr.sheep:
         [ ] mr.sheep code_0.baa code_1.baa    # internal mem to mem pipes (mem1 = mem0)
         [ ] mr.sheep c0.baa c1.baa c2.baa ... --schema "0|1|3;0|2;0|3" or "0|(1|3,2,3)"
     [ ] vmcalls:
-        [x] read, write, open
         [ ] fork, signal, ...
 [ ] fix:
     [ ] ._.
 wool:
 [x] convert wool code into mr.sheep valid bytecode
 [ ] add:
-    [ ] big unidirectional jumps??? (wool must resolve to Back or Forward jump)
-    [ ] maybe add some preprocessor macro magic :)
+    [ ] add some preprocessor macro magic
+    [ ] add some std libs
 [ ] make some examples:
     [x] hello world
     [ ] cat
@@ -37,10 +36,17 @@ wool:
     [ ] ._.
 milk:
 [ ] convert milk code into valid wool code
-[ ] make some examples:
+[ ] make some examples
 [ ] maybe add some preprocessor macro magic :)
 bigBaaain:
 [ ] do the magic
+test.py:
+[ ] add logging and verbosity params
+[ ] do tests:
+    [ ] mr.sheep.md
+    [ ] wool.md
+    [ ] milk.md
+    [ ] bigBaaain.md
 doc:
 [ ] mr.sheep.md
 [ ] wool.md

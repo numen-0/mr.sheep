@@ -12,7 +12,7 @@
                                        ( .   /\  .       (    )   
                                       (   )  \7 (   ) (     ) )   
                                        GuuUuuuUUuuuUUuuUUuuUUD    
-                                         d/ d/         d/ d/      
+                                        d/       d/  d/    d/     
 ```
 
 **mr.sheep** is an 8-bit, highly restricted virtual machine, designed to test
@@ -21,7 +21,7 @@ the boundaries of a hard environment.
 Features:
 - 256x8B addressable RAM
 - All instructions and values fit into 8-bit signed integers
-- VM calls (WIP)
+- VM calls (untested)
 
 ## baa
 `baa` is the bytecode used by `mr.sheep`.
@@ -36,6 +36,11 @@ Objectives:
 ## wool
 assembly-like language that directly translates into `baa` bytecode.
 
+Features:
+- small set of instructions
+- instructions directly translate to bytecode
+- preprocessor macros (WIP)
+
 ## milk (WIP)
 simple stack-based language that transpiles directly into `wool`.
 
@@ -48,6 +53,16 @@ simple test schema:
 2. catch output
 3. compare it with expected output
 4. done
+
+do to run tests
+```bash
+python ./test.py
+```
+
+do to update expected output
+```bash
+python ./test.py -d
+```
 
 ## license
 `TODO`
