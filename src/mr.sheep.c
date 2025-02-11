@@ -48,7 +48,7 @@
 
 #define IF(cond)     (cond)
 #define UNLESS(cond) (!cond)
-#define IF_POS(n)    ((int8_t)n > 0)
+#define IF_POS(n)    ((int8_t)n >= 0)
 #define IF_NEG(n)    ((int8_t)n < 0)
 #define _CASE_CJMP(inst, brch, A, B, size)                                    \
     RAW_CASE(inst, inst_ptr += brch(A(1)) ? (int8_t)B(2) + (size - 1) : size)

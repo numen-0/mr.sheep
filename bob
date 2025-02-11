@@ -28,8 +28,8 @@ bob_cmd() {
 bob_init
 
 milk_mode=false
-# bigBaaain_mode=true
-bigBaaain_mode=false
+bigBaaain_mode=true
+# bigBaaain_mode=false
 
 BIN_VM="./mr.sheep"
 BIN_WOOL="./wool"
@@ -43,7 +43,8 @@ MILK_IN="./in/test.milk"
 MILK_OUT="./out/test.wool"
 
 BB_SRC="./src/bigBaaain.py"
-BB_IN="./examples/bigBaaain/helloworld.bf"
+# BB_IN="./examples/bigBaaain/helloworld.bf"
+BB_IN="./examples/bigBaaain/add.bf"
 BB_OUT="./out/test.wool"
 
 OUT="out/"
@@ -51,6 +52,7 @@ OUT="out/"
 [ -d $OUT ] || mkdir -p $OUT
 
 if $milk_mode; then
+    bob_say "milk mode:"
     bob_say "genreating wool code..."
     bob_cmd "python $MILK_SRC $MILK_IN $MILK_OUT"
     python $MILK_SRC $MILK_IN $MILK_OUT
@@ -59,9 +61,22 @@ if $milk_mode; then
     bob_cmd "cat $MILK_OUT"
     cat $MILK_OUT
 elif $bigBaaain_mode; then
+    bob_say "compiling compiler..."
+    bob_cmd "gcc -o $BIN_WOOL ./src/wool.c"
+    gcc -o $BIN_WOOL ./src/wool.c
+
+    bob_say "compiling vm..."
+    bob_cmd "gcc -o $BIN_VM ./src/mr.sheep.c"
+    gcc -o $BIN_VM ./src/mr.sheep.c
+
+    bob_say "bigBaaain mode:"
     bob_say "genreating wool code..."
     bob_cmd "python $BB_SRC $BB_IN $BB_OUT"
     python $BB_SRC $BB_IN $BB_OUT
+
+    # bob_say "printing generated code"
+    # bob_cmd "cat $BB_OUT"
+    # cat $BB_OUT
 
     bob_say "compiling binary"
     bob_cmd "$BIN_WOOL $BB_OUT $WOOL_OUT"

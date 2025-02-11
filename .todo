@@ -43,7 +43,7 @@ milk:
 bigBaaain:
 [x] do the magic
 [ ] add:
-    [ ] instruction reduction trick (++++-- -> add &, 3)
+    [x] instruction reduction trick (++++-- -> add &, 3)
     [ ] launch paths for arbitrary lenght code
 test.py:
 [ ] add logging and verbosity params
@@ -52,6 +52,8 @@ test.py:
     [ ] wool.md
     [ ] milk.md
     [ ] bigBaaain.md
+bob:
+[ ] pretify the tool
 doc:
 [ ] mr.sheep.md
 [ ] wool.md

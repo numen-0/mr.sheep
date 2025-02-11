@@ -23,15 +23,21 @@ Features:
 - All instructions and values fit into 8-bit signed integers
 - VM calls (untested)
 
+## objectives
+- [ ] check if `baa` is Turing complete
+- [ ] create high-level programming languages that transpile to `wool`, which 
+then compiles to `baa` bytecode
+- [ ] create esoteric programming languages that transpile to `wool`, which 
+then compiles to `baa` bytecode 
+- [ ] make `baa` compilable (linux x86)
+- [ ] build a `VM` inside the `VM` (brainf*** interpreter doesn't count)
+
 ## baa
 `baa` is the bytecode used by `mr.sheep`.
-objectives:
-- basic input/output capabilities
-- test Turing completeness
-- create high-level programing languages that translate to baa bytecode
-- make baa compilable
-- add debugging features
-- ...
+features:
+- [x] basic input/output capabilities
+- [ ] add debugging features
+- [ ] multithreading?
 
 ### baa: how to use
 to transpile a `wool` file into `baa` bytecode, use:
@@ -48,7 +54,7 @@ features:
 - instructions directly translate to bytecode
 - preprocessor macros (WIP)
 
-to interpret the baa bytecode go [here](###baa:_how_to_use).
+to interpret the baa bytecode go [here](#baa-how-to-use).
 
 ### wool: how to use
 to transpile a `wool` file into `baa` bytecode, use:
@@ -75,7 +81,7 @@ to transpile a `brainf***` file into `wool`, use:
 python ./src/bigBaaain.py ./examples/bigBaaain/helloworld.bf ./helloworld.wool
 ```
 
-to transpile the wool code go [here](###wool:_how_to_use).
+to transpile the wool code go [here](#wool-how-to-use).
 
 ## tests
 simple test schema:
@@ -84,12 +90,12 @@ simple test schema:
 3. compare it with expected output
 4. done
 
-do to run tests
+to run the tests, do:
 ```bash
 python ./test.py
 ```
 
-do to update expected output
+to update expected output, do:
 ```bash
 python ./test.py -d
 ```
