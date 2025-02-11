@@ -1,3 +1,0 @@
-main:
-    mov &'p', &1
-    EXIT 0

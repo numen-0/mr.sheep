@@ -28,7 +28,7 @@ syn case match
 syn match sheepNormal /[a-zA-Z_][a-zA-Z_0-9]*/
 
 " comment tags
-syntax keyword sheepTodos contained TODO XXX FIXME NOTE HACK
+" syntax keyword sheepTodos contained TODO XXX FIXME NOTE HACK
 
 " comments
 syntax region sheepComment start=";" end="$"   contains=sheepTodos

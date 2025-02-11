@@ -1,0 +1,28 @@
+; description:
+;   parrot: repeats what it hears
+;       FROM: stdin:  0  (VMREAD:  1)
+;       TO:   stdout: 1  (VMWRITE: 2)
+; use:
+;   ./mr.sheep parrot.baa < ./mr.sheep.txt      # print files
+;   echo "hello" | ./mr.sheep parrot.baa        # pipe
+;   ./mr.sheep parrot.baa                       # to speak with the parrot
+main:
+    mov &0xfd,  0       ; &buf (this value is not going to change)
+read:
+    mov &0xff,  1       ; read call
+    mov &0xfe,  0       ; stdin
+    mov &0xfc,  128     ; count;
+    VMCALL              ; exec vmcall
+    JS  &0xfb,  err     ; -1 for err
+    JZ  &0xfb,  end     ; 0 for EOF
+write:
+    mov &0xff,  2       ; write call
+    mov &0xfe,  1       ; stdout
+    mov &0xfc,  &0xfb   ; count (from readed bytes)
+    VMCALL              ; exec vmcall
+    JS  &0xfb,  err     ; -1 for err
+    JMP read
+err:
+    EXIT 1
+end:
+    EXIT 0

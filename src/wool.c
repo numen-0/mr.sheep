@@ -370,6 +370,7 @@ append_statement:
             strncpy(rep, l1->rep, l1->rep_size);
             rep[l1->rep_size] = '\0';
             l1->rep = rep;
+            // printf("label[%d]: '%s'\n", i, rep);
 
             for ( size_t j = 0; j < i; j++ ) { // check redefined labels
                 Token* l0 = labels.arr[j].base;
@@ -487,7 +488,9 @@ strtol_done:
                     bool find = false;
                     for ( size_t j = 0; j < labels.count; j++ ) {
                         Statement* label = &labels.arr[j];
-                        if ( !strcmp(label->base->rep, ti->rep) ) {
+                        if ( label->base->rep_size == ti->rep_size
+                            && (!strncmp(label->base->rep, ti->rep,
+                                label->base->rep_size)) ) {
                             long v = label->meta.offset - byte_code.count;
                             // v = (v >= 0) ? (v - 1) : (v + argc - 1);
 
@@ -553,7 +556,7 @@ no_match_error:
         } while ( true );                                           \
         goto number_done;                                           \
     } while ( 0 );
-#define NUMBER_CHECK0x(isX)                                 \
+#define NUMBER_CHECK_0(isX)                                 \
     do {                                                    \
         i += 2;                                             \
         if ( !isX(line[i]) ) {                              \
@@ -632,16 +635,22 @@ static void tok_process_line(
             TOKEN_INIT(*t, T_NAME, &line[n], i - n, row, n);
             i--;
         }
-        else if ( isdigit(line[i]) )
+        else if ( isdigit(line[i]) || line[i] == '-' )
         {
             size_t n = i;
-            if ( line[i] == '0' && i + 2 < size ) {
+            if ( line[i] == '-' ) {
+                i++;
+                if ( size <= i ) {
+                    TOKEN_INIT(*t, T_ILLEGAL, &line[n], 1, row, i);
+                    goto append_token;
+                }
+            } else if ( line[i] == '0' && i + 2 < size ) {
                 if ( line[i + 1] == 'x' ) {        // hex
-                    NUMBER_CHECK0x(isxdigit);
+                    NUMBER_CHECK_0(isxdigit);
                 } else if ( line[i + 1] == 'o' ) { // oct
-                    NUMBER_CHECK0x(isodigit);
+                    NUMBER_CHECK_0(isodigit);
                 } else if ( line[i + 1] == 'b' ) { // bin
-                    NUMBER_CHECK0x(isbdigit);
+                    NUMBER_CHECK_0(isbdigit);
                 }
             } // dec
             NUMBER_CHECK(isdigit);

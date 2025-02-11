@@ -48,8 +48,8 @@
 
 #define IF(cond)     (cond)
 #define UNLESS(cond) (!cond)
-#define IF_POS(n)    (n > 0)
-#define IF_NEG(n)    (n < 0)
+#define IF_POS(n)    ((int8_t)n > 0)
+#define IF_NEG(n)    ((int8_t)n < 0)
 #define _CASE_CJMP(inst, brch, A, B, size)                                    \
     RAW_CASE(inst, inst_ptr += brch(A(1)) ? (int8_t)B(2) + (size - 1) : size)
 #define CASE_CJMP(inst, brch)                                          \
@@ -65,7 +65,7 @@
 #define CASE_UJMP(inst, op, cast)                                   \
     _CASE_UJMP(GLUE(inst, _L), op, cast, LIT, GLUE(inst, _L_SIZE)); \
     _CASE_UJMP(GLUE(inst, _R), op, cast, REF, GLUE(inst, _R_SIZE)); \
-    _CASE_UJMP(GLUE(inst, _P), op, cast, PTR, GLUE(inst, _P_SIZE));
+    _CASE_UJMP(GLUE(inst, _P), op, cast, PTR, GLUE(inst, _P_SIZE))
 
 #define CASE_PRINT(inst, format)                  \
     CASE(GLUE(inst, _L), printf(format, LIT(1))); \
@@ -142,6 +142,7 @@ const char* instruction_size_map[] = { BYTE_CODES };
 // #define VC_ARG_PTR(n) &ram[ram[ram[MR_SHEEP_MEM - (n) - 1]]]
 inline static uint8_t sheep_vmcall(uint8_t ram[MR_SHEEP_MEM])
 {
+    // STDIN_FILENO
     switch ( (vm_call_t)VC_ARG(0) ) {
         case VC_OPEN: { // NOTE: we could check the sanity of the args but...
             int fd = open((const char*)VC_ARG_PTR(2), VC_ARG(3));
@@ -152,9 +153,11 @@ inline static uint8_t sheep_vmcall(uint8_t ram[MR_SHEEP_MEM])
         }
         case VC_READ:
             VC_ARG(4) = read(VC_ARG(1), VC_ARG_PTR(2), VC_ARG(3));
+            // printf("\nread %d bytes\n", VC_ARG(4));
             break;
         case VC_WRITE:
             VC_ARG(4) = write(VC_ARG(1), VC_ARG_PTR(2), VC_ARG(3));
+            // printf("\nwrite %d bytes\n", VC_ARG(4));
             break;
         case VC_CLOSE: VC_ARG(4) = close(VC_ARG(1)); break;
         default:       ERR("unimplemented vmcall '0x%02x'", VC_ARG(0));
@@ -244,7 +247,7 @@ size_t sheep_load_file(const char* file_name, uint8_t** buffer)
     FILE* file = fopen(file_name, "rb");
     if ( !file ) {
         perror("mr.sheep: failed to open file");
-        return -1;
+        return 0;
     }
 
     // seek to the end of the file to get the total size
@@ -257,7 +260,7 @@ size_t sheep_load_file(const char* file_name, uint8_t** buffer)
     if ( *buffer == NULL ) {
         perror("Failed to allocate memory");
         fclose(file);
-        return -1;
+        return 0;
     }
 
     size_t bytes_read = fread(*buffer, 1, size, file);
@@ -265,7 +268,7 @@ size_t sheep_load_file(const char* file_name, uint8_t** buffer)
         perror("mr.sheep: failed to read the full file");
         free(*buffer);
         fclose(file);
-        return -1;
+        return 0;
     }
     // printf("mr.sheep: successfully loaded '%s' of %zuB\n", file_name, size);
 
@@ -316,5 +319,5 @@ int main(int argc, char* argv[])
 
     free(code);
 
-    return EXIT_SUCCESS;
+    return exit_code;
 }

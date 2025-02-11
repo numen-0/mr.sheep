@@ -31,11 +31,10 @@ milk_mode=false
 
 BIN_VM="./mr.sheep"
 BIN_WOOL="./wool"
-WOOL_IN="./examples/hello.wool"
-# WOOL_IN="./examples/t.wool"
-# WOOL_IN="./examples/jump.wool"
-# WOOL_IN="./examples/print_100_to_0.wool"
-WOOL_OUT="./out/test.bee"
+# WOOL_IN="./examples/wool/hello.wool"
+WOOL_IN="./examples/wool/parrot.wool"
+# WOOL_IN="./examples/wool/t.wool"
+WOOL_OUT="./out/test.baa"
 
 MILK_SRC="./src/milk.py"
 MILK_IN="./in/test.milk"
@@ -44,6 +43,10 @@ MILK_OUT="./out/test.wool"
 OUT="out/"
 
 [ -d $OUT ] || mkdir -p $OUT
+
+bob_say "compiling compiler..."
+bob_cmd "gcc -o $BIN_WOOL ./src/wool.c"
+gcc -o $BIN_WOOL ./src/wool.c
 
 if $milk_mode; then
     bob_say "genreating wool code..."
@@ -74,8 +77,11 @@ else
     xxd -g 1 $WOOL_OUT
 
     bob_say "exec..."
-    bob_cmd "$BIN_VM ./out/test.bee"
-    $BIN_VM ./out/test.bee
+    bob_cmd "$BIN_VM $WOOL_OUT"
+    $BIN_VM $WOOL_OUT < ./t.c \
+        && bob_say "exit code: $?" \
+        || bob_say "exit code: $?"
+    # $BIN_VM $WOOL_OUT && echo "all cool" || echo "not cool"
 fi
 
 bob_end

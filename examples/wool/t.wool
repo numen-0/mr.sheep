@@ -1,0 +1,7 @@
+main:
+    mov &'A', 10
+    JS &'A', neg
+pos:
+    EXIT 1
+neg:
+    EXIT 0
