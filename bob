@@ -28,6 +28,8 @@ bob_cmd() {
 bob_init
 
 milk_mode=false
+# bigBaaain_mode=true
+bigBaaain_mode=false
 
 BIN_VM="./mr.sheep"
 BIN_WOOL="./wool"
@@ -40,13 +42,13 @@ MILK_SRC="./src/milk.py"
 MILK_IN="./in/test.milk"
 MILK_OUT="./out/test.wool"
 
+BB_SRC="./src/bigBaaain.py"
+BB_IN="./examples/bigBaaain/helloworld.bf"
+BB_OUT="./out/test.wool"
+
 OUT="out/"
 
 [ -d $OUT ] || mkdir -p $OUT
-
-bob_say "compiling compiler..."
-bob_cmd "gcc -o $BIN_WOOL ./src/wool.c"
-gcc -o $BIN_WOOL ./src/wool.c
 
 if $milk_mode; then
     bob_say "genreating wool code..."
@@ -56,6 +58,25 @@ if $milk_mode; then
     bob_say "genreating wool code..."
     bob_cmd "cat $MILK_OUT"
     cat $MILK_OUT
+elif $bigBaaain_mode; then
+    bob_say "genreating wool code..."
+    bob_cmd "python $BB_SRC $BB_IN $BB_OUT"
+    python $BB_SRC $BB_IN $BB_OUT
+
+    bob_say "compiling binary"
+    bob_cmd "$BIN_WOOL $BB_OUT $WOOL_OUT"
+    # $BIN_WOOL $WOOL_IN $WOOL_OUT > /dev/null
+    $BIN_WOOL $BB_OUT $WOOL_OUT
+
+    bob_say "checking the binary file"
+    bob_cmd "xxd -g 1 $WOOL_OUT"
+    xxd -g 1 $WOOL_OUT
+
+    bob_say "exec..."
+    bob_cmd "$BIN_VM $WOOL_OUT"
+    $BIN_VM $WOOL_OUT \
+        && bob_say "exit code: $?" \
+        || bob_say "exit code: $?"
 else
     # gcc -E src/mr.sheep.c -o out/mr.sheep.proc.c
     # gcc -E src/wool.c -o out/wool.proc.c
@@ -78,7 +99,7 @@ else
 
     bob_say "exec..."
     bob_cmd "$BIN_VM $WOOL_OUT"
-    $BIN_VM $WOOL_OUT < ./t.c \
+    $BIN_VM $WOOL_OUT \
         && bob_say "exit code: $?" \
         || bob_say "exit code: $?"
     # $BIN_VM $WOOL_OUT && echo "all cool" || echo "not cool"

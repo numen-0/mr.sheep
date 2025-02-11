@@ -14,8 +14,10 @@ mr.sheep:
         [ ] bytecode disasembler
         [ ] step by step running
     [ ] piping:
-        [ ] cmd | mr.sheep code.baa          # shell pipes to mem
-        [ ] mr.sheep code_0.baa code_1.baa    # internal mem to mem pipes (mem1 = mem0)
+        [ ] shell pipes:
+            [x] cmd | mr.sheep code.baa  # code.baa will handle itself (stdin)
+            [ ] cmd | mr.sheep code.baa --dump-in-ram  # dump stdin to ram
+        [ ] mr.sheep code_0.baa code_1.baa  # internal ram pipes (ram0 = ram1)
         [ ] mr.sheep c0.baa c1.baa c2.baa ... --schema "0|1|3;0|2;0|3" or "0|(1|3,2,3)"
     [ ] vmcalls:
         [ ] fork, signal, ...
@@ -39,7 +41,10 @@ milk:
 [ ] make some examples
 [ ] maybe add some preprocessor macro magic :)
 bigBaaain:
-[ ] do the magic
+[x] do the magic
+[ ] add:
+    [ ] instruction reduction trick (++++-- -> add &, 3)
+    [ ] launch paths for arbitrary lenght code
 test.py:
 [ ] add logging and verbosity params
 [ ] do tests:
